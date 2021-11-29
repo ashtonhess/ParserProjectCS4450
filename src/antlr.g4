@@ -13,3 +13,5 @@ expression
 PLUS   :  '+';
 MINUS  :  '-';
 INT    :  '0'..'9'+;
+IF     : 'if';
+ELSE   : 'else';
