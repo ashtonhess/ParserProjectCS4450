@@ -6,8 +6,9 @@ start  :
 
 expression
    :
-   |   INT
-   |   STRING
+   |   INT SPACE expression
+   |   STRING SPACE equal
+   |   WS
    |   expression (PLUS | MINUS) expression
    ;
 ifBlock
@@ -18,7 +19,16 @@ elseBlock
     :
     |
     ;
-
+equal
+    :
+    | Equal expression
+    ;
+space
+    :
+    |
+    ;
+SPACE : ' ';
+EQUAL  : '=';
 PLUS   :  '+';
 MINUS  :  '-';
 INT    :  '0'..'9'+;
