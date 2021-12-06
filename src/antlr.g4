@@ -55,4 +55,6 @@ GREATERTHAN: '>';
 //greater than eq, just combine <=
 //eq eq, combine two =
 //not eq, combine ! and =
+LESSTHANEQUALTO: '<=';
+GREATERTHANEQUALTO: '>=';
 
