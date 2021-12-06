@@ -5,18 +5,22 @@ start
     ;
 
 block
-    : expression
+    : assignment block
+    | ifBlock    block
     ;
 
 expression
    :
-   |   ifBlock
-   |   INT
-   |   STRING
-   |   expression (PLUS | MINUS) expression
-   |
-   |
+   |   var op=(PLUS | MINUS) var
+   |   var
    ;
+
+var
+    : INT
+    | STRING
+    ;
+
+
 ifBlock
     : IF expression_block (ELIF expression_block) * (ELSE COL statement_block)?
     ;
@@ -30,8 +34,12 @@ statement_block
     | TAB expression block
     ;
 assignment
-    :VARIABLE EQUAL expression
+    :VARNAME EQUAL expression
     ;
+
+
+
+
 TAB : '    ';
 SPACE : ' ';
 EQUAL  : '=';
@@ -41,16 +49,19 @@ COL    : ':';
 NOT    : '!';
 INT    :  '0'..'9'+;
 STRING : '"' (~["\r\n] | '""')* '"';
-VARIABLE: [a-zA-Z_] [a-zA-Z_0-9]*;
+
+
 //other string example
-//('a' .. 'z' | 'A' .. 'Z' | '\u0100' .. '\u017E')+ ;
+//STRING : ('a' .. 'z' | 'A' .. 'Z' | '\u0100' .. '\u017E')+ ;
 WS     : [\r\n]+ -> skip ;
-IF     : 'if'+;
+IF     : 'if';
 ELSE   : 'else';
 ELIF   :  'elif';
 OPEN   : '(';
 CLOSE  : ')';
+VARNAME: [a-zA-Z_] [a-zA-Z_0-9]*;
 COMMENT: '#' ~[\r\n]* -> skip;
+
 
 //conditional statements
 LESSTHAN: '<';
