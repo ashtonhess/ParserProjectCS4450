@@ -6,26 +6,21 @@ start  :
 
 expression
    :
-   |   IF expression
-   |   INT SPACE expression
-   |   STRING SPACE equal
-   |   //WS expression
+   |   ifBlock
+   |   INT expression
    |   expression (PLUS | MINUS) expression
    |
    |
    ;
 ifBlock
-    :
-    | SPACE OPEN expression CLOSE
-    | OPEN CLOSE
+    : IF expression_block (ELSE IF expression_block) * (ELSE statement_block)?
     ;
-elseBlock
-    :
-    |
+expression_block
+    : expression COL statement_block
     ;
-equal
-    :
-    | Equal expression
+statement_block
+    : OPEN expression_block CLOSE
+    | expression
     ;
 
 
@@ -33,6 +28,8 @@ SPACE : ' ';
 EQUAL  : '=';
 PLUS   :  '+';
 MINUS  :  '-';
+COL    : ':';
+NOT    : '!';
 INT    :  '0'..'9'+;
 STRING : '"' (~["\r\n] | '""')* '"';
 //other string example
