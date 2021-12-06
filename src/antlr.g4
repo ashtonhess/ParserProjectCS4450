@@ -5,8 +5,8 @@ start
     ;
 
 block
-    : assignment block
-    | ifBlock    block
+    : assignment block*
+    | ifBlock    block*
     ;
 
 expression
@@ -34,7 +34,11 @@ statement_block
     | TAB expression block
     ;
 assignment
-    :VARNAME EQUAL expression
+    : VARNAME EQUAL expression
+    | VARNAME SPACE EQUAL expression
+    | VARNAME SPACE EQUAL SPACE expression
+    | VARNAME  EQUAL SPACE expression
+
     ;
 
 
