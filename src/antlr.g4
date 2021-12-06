@@ -11,7 +11,8 @@ block
 expression
    :
    |   ifBlock
-   |   INT expression
+   |   INT
+   |   STRING
    |   expression (PLUS | MINUS) expression
    |
    |
