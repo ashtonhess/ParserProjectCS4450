@@ -42,5 +42,11 @@ OPEN   : '(';
 CLOSE  : ')';
 COMMENT: '#' ~[\r\n]* -> skip;
 
-
+//conditional statements
+LESSTHAN: '<';
+//less than eq, just combine <=
+GREATERTHAN: '>';
+//greater than eq, just combine <=
+//eq eq, combine two =
+//not eq, combine ! and =
 
