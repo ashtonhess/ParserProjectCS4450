@@ -1,8 +1,12 @@
 grammar antlr;
 
-start  :
-     expression  EOF
-  ;
+start
+    : block  EOF
+    ;
+
+block
+    : expression
+    ;
 
 expression
    :
@@ -13,18 +17,19 @@ expression
    |
    ;
 ifBlock
-    : IF expression_block (ELSE IF expression_block) * (ELSE statement_block)?
+    : IF expression_block (ELIF expression_block) * (ELSE COL statement_block)?
     ;
 expression_block
     : SPACE expression COL statement_block
     | OPEN expression CLOSE COL statement_block
     ;
 statement_block
-    : OPEN expression_block CLOSE
-    | expression
+    :
+    | TAB expression statement_block
+    | TAB expression block
     ;
 
-
+TAB : '    ';
 SPACE : ' ';
 EQUAL  : '=';
 PLUS   :  '+';
@@ -35,9 +40,10 @@ INT    :  '0'..'9'+;
 STRING : '"' (~["\r\n] | '""')* '"';
 //other string example
 //('a' .. 'z' | 'A' .. 'Z' | '\u0100' .. '\u017E')+ ;
-WS     : [ \t\r\n]+ -> skip ;
+WS     : [\r\n]+ -> skip ;
 IF     : 'if'+;
 ELSE   : 'else';
+ELIF   :  'elif';
 OPEN   : '(';
 CLOSE  : ')';
 COMMENT: '#' ~[\r\n]* -> skip;
