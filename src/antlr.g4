@@ -28,7 +28,9 @@ statement_block
     | TAB expression statement_block
     | TAB expression block
     ;
-
+assignment
+    :VARIABLE EQUAL expression
+    ;
 TAB : '    ';
 SPACE : ' ';
 EQUAL  : '=';
@@ -38,6 +40,7 @@ COL    : ':';
 NOT    : '!';
 INT    :  '0'..'9'+;
 STRING : '"' (~["\r\n] | '""')* '"';
+VARIABLE: [a-zA-Z_] [a-zA-Z_0-9]*;
 //other string example
 //('a' .. 'z' | 'A' .. 'Z' | '\u0100' .. '\u017E')+ ;
 WS     : [\r\n]+ -> skip ;
