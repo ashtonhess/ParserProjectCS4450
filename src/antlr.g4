@@ -16,7 +16,8 @@ ifBlock
     : IF expression_block (ELSE IF expression_block) * (ELSE statement_block)?
     ;
 expression_block
-    : expression COL statement_block
+    : SPACE expression COL statement_block
+    | OPEN expression CLOSE COL statement_block
     ;
 statement_block
     : OPEN expression_block CLOSE
