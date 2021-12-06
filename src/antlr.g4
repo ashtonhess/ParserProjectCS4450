@@ -5,13 +5,13 @@ start
     ;
 
 block
-    : assignment block*
-    | ifBlock    block*
+    : assignment block
+    | ifBlock    block
     ;
 
 expression
    :
-   |   var op=(PLUS | MINUS) var
+   |   var op=(PLUS | MINUS | MULT | DIVIDE) var
    |   var
    ;
 
@@ -49,6 +49,8 @@ SPACE : ' ';
 EQUAL  : '=';
 PLUS   :  '+';
 MINUS  :  '-';
+MULT    : '*';
+DIVIDE  : '/';
 COL    : ':';
 NOT    : '!';
 INT    :  '0'..'9'+;
