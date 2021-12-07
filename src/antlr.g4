@@ -76,10 +76,15 @@ whileBlock
     | WHILE expression_block
     ;
 
+
+//NOTE: ezTab
+//NOT SURE IF THIS SHOULD BE USED. MIGHT BREAK RULES OF PYTHON TABS.
+//CHECK -AH
 ezTab
     :  TAB
     |  ezTab ezTab
     ;
+
 
 WHILE : 'while';
 
