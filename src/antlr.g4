@@ -5,18 +5,21 @@ start
     ;
 
 block
-    : assignment block
-    | ifBlock    block
+    : assignment block*
+    | ifBlock    block*
+    | whileBlock block*
     ;
 
 expression
    :
    |   var op=(PLUS | MINUS | MULT | DIVIDE) var
    |   var
+   |   var conditon=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO) var
    ;
 
 var
-    : INT
+    :
+    | INT
     | STRING
     ;
 
@@ -38,11 +41,18 @@ assignment
     | VARNAME SPACE EQUAL expression
     | VARNAME SPACE EQUAL SPACE expression
     | VARNAME  EQUAL SPACE expression
-
     ;
 
+//condition_block
+//    :
+//    | SPACE expression LESSTHAN expression
+//    ;
 
+whileBlock
+    : WHILE SPACE expression
+    ;
 
+WHILE : 'while';
 
 TAB : '    ';
 SPACE : ' ';
