@@ -26,6 +26,11 @@ expression
    |   VARNAME condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO) VARNAME
    |   var condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO) VARNAME
    |   VARNAME condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO) var
+   //
+   | expression SPACE OR SPACE expression
+   | expression OR expression
+   | expression SPACE AND SPACE expression
+   | expression AND expression
    ;
 
 var
@@ -99,4 +104,7 @@ GREATERTHAN: '>';
 //not eq, combine ! and =
 LESSTHANEQUALTO: '<=';
 GREATERTHANEQUALTO: '>=';
+
+OR: ' or ';
+AND: ' and ';
 
