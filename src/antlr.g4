@@ -12,20 +12,25 @@ block
 
 expression
    :
-   |  //NEXT: ADD SUPPORT FOR and, or -AHess
+   |
    //
    |   var op=(PLUS | MINUS | MULT | DIVIDE) var
    |   var
    |   var conditon=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO) var
    //
    //WITH SPACES
-   |   VARNAME SPACE condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO) SPACE VARNAME
-   |   var SPACE condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO) SPACE VARNAME
-   |   VARNAME SPACE condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO) SPACE var
+   |   VARNAME SPACE condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO | EQUALEQUAL) SPACE VARNAME
+   |   var SPACE condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO | EQUALEQUAL) SPACE VARNAME
+   |   VARNAME SPACE condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO | EQUALEQUAL) SPACE var
    //WITHOUT SPACES
-   |   VARNAME condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO) VARNAME
-   |   var condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO) VARNAME
-   |   VARNAME condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO) var
+   |   VARNAME condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO | EQUALEQUAL) VARNAME
+   |   var condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO | EQUALEQUAL) VARNAME
+   |   VARNAME condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO | EQUALEQUAL) var
+   //
+   |   var condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO | EQUALEQUAL) var
+   |   var SPACE condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO | EQUALEQUAL) SPACE var
+   //
+   //
    //
    | expression SPACE OR SPACE expression
    | expression OR expression
@@ -49,8 +54,9 @@ expression_block
     ;
 statement_block
     :
-    | TAB expression statement_block
-    | TAB expression block
+    | ezTab expression statement_block
+    | ezTab expression block
+    | ezTab block
     ;
 assignment
     : VARNAME EQUAL expression
@@ -65,7 +71,13 @@ assignment
 //    ;
 
 whileBlock
-    : WHILE SPACE expression
+    : WHILE SPACE expression COL statement_block
+    | WHILE expression_block
+    ;
+
+ezTab
+    :  TAB
+    |  ezTab ezTab
     ;
 
 WHILE : 'while';
@@ -97,13 +109,10 @@ COMMENT: '#' ~[\r\n]* -> skip;
 
 //conditional statements
 LESSTHAN: '<';
-//less than eq, just combine <=
 GREATERTHAN: '>';
-//greater than eq, just combine <=
-//eq eq, combine two =
-//not eq, combine ! and =
 LESSTHANEQUALTO: '<=';
 GREATERTHANEQUALTO: '>=';
+EQUALEQUAL: '==';
 
 OR: ' or ';
 AND: ' and ';
