@@ -7,50 +7,79 @@ start
 block
     : assignment block*
     | ifBlock    block*
+    | print block*
     | whileBlock block*
     ;
 
+mathExpr
+    :   var conditon=(PLUS | MINUS | MULT | DIVIDE) var
+    |   var ezSpace conditon=(PLUS | MINUS | MULT | DIVIDE) var
+    |   var conditon=(PLUS | MINUS | MULT | DIVIDE) ezSpace var
+    |   var ezSpace conditon=(PLUS | MINUS | MULT | DIVIDE) ezSpace var
+    ;
+
+plusExpr
+    : ezSpace PLUS ezSpace
+    | ezSpace PLUS
+    | PLUS ezSpace
+    | PLUS
+    ;
+
+
+
+
+
 expression
-   :
-   |
-   //
-   |   var op=(PLUS | MINUS | MULT | DIVIDE) var
-   |   var
+   :   mathExpr
    |   var conditon=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO) var
+   |   var
+   |   expression ezSpace AND ezSpace expression
    //
    //WITH SPACES
-   |   VARNAME SPACE condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO | EQUALEQUAL) SPACE VARNAME
-   |   var SPACE condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO | EQUALEQUAL) SPACE VARNAME
-   |   VARNAME SPACE condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO | EQUALEQUAL) SPACE var
+   |   VARNAME ezSpace condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO | EQUALEQUAL) ezSpace VARNAME
+   |   var ezSpace condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO | EQUALEQUAL) ezSpace VARNAME
+   |   VARNAME ezSpace condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO | EQUALEQUAL) ezSpace var
    //WITHOUT SPACES
    |   VARNAME condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO | EQUALEQUAL) VARNAME
    |   var condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO | EQUALEQUAL) VARNAME
    |   VARNAME condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO | EQUALEQUAL) var
    //
    |   var condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO | EQUALEQUAL) var
-   |   var SPACE condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO | EQUALEQUAL) SPACE var
+   |   var ezSpace condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO | EQUALEQUAL) ezSpace var
    //
    //
    //
    //
-   | expression SPACE OR SPACE expression
+   | expression ezSpace OR ezSpace expression
    | expression OR expression
-   | expression SPACE AND SPACE expression
-   | expression AND expression
+   | expression ezSpace AND ezSpace expression
    ;
 
 var
     :
     | INT
     | STRING
+    | VARNAME
     ;
 
+print
+    : PRINT OPEN printExpr CLOSE
+    | PRINT OPEN ezSpace printExpr CLOSE
+    | PRINT OPEN printExpr ezSpace CLOSE
+    | PRINT OPEN ezSpace printExpr ezSpace CLOSE
+    ;
 
+printExpr
+    : STRING plusExpr printExpr
+    | strCast plusExpr printExpr
+    | strCast
+    | STRING
+    ;
 ifBlock
     : IF expression_block (ELIF expression_block) * (ELSE COL statement_block)?
     ;
 expression_block
-    : SPACE expression COL statement_block
+    : ezSpace expression COL statement_block
     | OPEN expression CLOSE COL statement_block
     ;
 statement_block
@@ -61,9 +90,16 @@ statement_block
     ;
 assignment
     : VARNAME EQUAL expression
-    | VARNAME SPACE EQUAL expression
-    | VARNAME SPACE EQUAL SPACE expression
-    | VARNAME  EQUAL SPACE expression
+    | VARNAME ezSpace EQUAL expression
+    | VARNAME ezSpace EQUAL ezSpace expression
+    | VARNAME  EQUAL ezSpace expression
+    ;
+
+strCast
+    : STR OPEN var CLOSE
+    | STR OPEN ezSpace var ezSpace CLOSE
+    | STR OPEN ezSpace var  CLOSE
+    | STR OPEN var ezSpace CLOSE
     ;
 
 //condition_block
@@ -72,7 +108,7 @@ assignment
 //    ;
 
 whileBlock
-    : WHILE SPACE expression COL statement_block
+    : WHILE ezSpace expression COL statement_block
     | WHILE expression_block
     ;
 
@@ -84,12 +120,21 @@ ezTab
     :  TAB
     |  ezTab ezTab
     ;
+ezSpace
+    : SPACE
+    | TAB
+    | ezSpace ezSpace
+    ;
 
 
+STR : 'str';
 WHILE : 'while';
-
-TAB : '    ';
+FOR : 'for';
+PRINT : 'print';
 SPACE : ' ';
+TAB : '    ';
+
+EQUALEQUAL: '==';
 EQUAL  : '=';
 PLUS   :  '+';
 MINUS  :  '-';
@@ -109,8 +154,11 @@ ELSE   : 'else';
 ELIF   :  'elif';
 OPEN   : '(';
 CLOSE  : ')';
+OR: 'or';
+AND: 'and';
 VARNAME: [a-zA-Z_] [a-zA-Z_0-9]*;
 COMMENT: '#' ~[\r\n]* -> skip;
+
 
 
 //conditional statements
@@ -118,8 +166,7 @@ LESSTHAN: '<';
 GREATERTHAN: '>';
 LESSTHANEQUALTO: '<=';
 GREATERTHANEQUALTO: '>=';
-EQUALEQUAL: '==';
 
-OR: ' or ';
-AND: ' and ';
+
+
 
