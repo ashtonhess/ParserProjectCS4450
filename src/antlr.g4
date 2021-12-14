@@ -36,23 +36,25 @@ expression
    |   expression ezSpace AND ezSpace expression
    //
    //WITH SPACES
-   |   VARNAME ezSpace condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO | EQUALEQUAL) ezSpace VARNAME
-   |   var ezSpace condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO | EQUALEQUAL) ezSpace VARNAME
-   |   VARNAME ezSpace condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO | EQUALEQUAL) ezSpace var
-   //WITHOUT SPACES
-   |   VARNAME condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO | EQUALEQUAL) VARNAME
-   |   var condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO | EQUALEQUAL) VARNAME
-   |   VARNAME condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO | EQUALEQUAL) var
-   //
-   |   var condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO | EQUALEQUAL) var
    |   var ezSpace condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO | EQUALEQUAL) ezSpace var
+   |   var condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO | EQUALEQUAL) ezSpace var
+   |   var ezSpace condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO | EQUALEQUAL)  var
+   //WITHOUT SPACES
+   |   var condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO | EQUALEQUAL) var
    //
    //
    //
    //
+   // or expressions
    | expression ezSpace OR ezSpace expression
+   | expression  OR ezSpace expression
+   | expression ezSpace OR expression
    | expression OR expression
+   // and expressions
    | expression ezSpace AND ezSpace expression
+   | expression AND ezSpace expression
+   | expression ezSpace AND expression
+   | expression AND expression
    ;
 
 var
@@ -70,13 +72,13 @@ print
     ;
 
 printExpr
-    : STRING plusExpr printExpr
+    : var plusExpr printExpr
     | strCast plusExpr printExpr
     | strCast
-    | STRING
+    | var
     ;
 ifBlock
-    : IF expression_block (ELIF expression_block) * (ELSE COL statement_block)?
+    : IF expression_block * (ELIF expression_block) * (ELSE COL statement_block)?
     ;
 expression_block
     : ezSpace expression COL statement_block
