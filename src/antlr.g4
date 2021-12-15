@@ -6,16 +6,16 @@ start
 
 block
     : assignment block*
-    | ifBlock    block*
+    | ifBlock block*
     | print block*
     | whileBlock block*
     ;
 
 mathExpr
-    :   var conditon=(PLUS | MINUS | MULT | DIVIDE) var
-    |   var ezSpace conditon=(PLUS | MINUS | MULT | DIVIDE) var
-    |   var conditon=(PLUS | MINUS | MULT | DIVIDE) ezSpace var
-    |   var ezSpace conditon=(PLUS | MINUS | MULT | DIVIDE) ezSpace var
+    :   var conditon=(PLUS | MINUS | MULT | DIVIDE | PLUSEQUAL | MINUSEQUAL | MULTEQUAl | DIVIDEEQUAL) var
+    |   var ezSpace conditon=(PLUS | MINUS | MULT | DIVIDE | PLUSEQUAL | MINUSEQUAL | MULTEQUAl | DIVIDEEQUAL) var
+    |   var conditon=(PLUS | MINUS | MULT | DIVIDE | PLUSEQUAL | MINUSEQUAL | MULTEQUAl | DIVIDEEQUAL) ezSpace var
+    |   var ezSpace conditon=(PLUS | MINUS | MULT | DIVIDE | PLUSEQUAL | MINUSEQUAL | MULTEQUAl | DIVIDEEQUAL) ezSpace var
     ;
 
 plusExpr
@@ -58,8 +58,7 @@ expression
    ;
 
 var
-    :
-    | INT
+    : INT
     | STRING
     | VARNAME
     ;
@@ -78,17 +77,20 @@ printExpr
     | var
     ;
 ifBlock
-    : IF expression_block * (ELIF expression_block) * (ELSE COL statement_block)?
+    : IF expression_block * (ezTab ELIF expression_block) * (ezTab ELSE COL statement_block)?
+    | IF expression_block * (ELIF expression_block) * (ELSE COL statement_block)?
     ;
 expression_block
     : ezSpace expression COL statement_block
     | OPEN expression CLOSE COL statement_block
     ;
 statement_block
-    :
-    | ezTab expression statement_block
-    | ezTab expression block
-    | ezTab block
+    : ezTab expression statement_block
+    | ezTab ifBlock statement_block
+    | ezTab assignment statement_block
+    | ezTab whileBlock statement_block
+    | ezTab print statement_block
+    | block*
     ;
 assignment
     : VARNAME EQUAL expression
@@ -136,6 +138,11 @@ PRINT : 'print';
 SPACE : ' ';
 TAB : '    ';
 
+MINUSEQUAL: '-=';
+PLUSEQUAL: '+=';
+MULTEQUAl: '*=';
+DIVIDEEQUAL: '/=';
+
 EQUALEQUAL: '==';
 EQUAL  : '=';
 PLUS   :  '+';
@@ -168,6 +175,7 @@ LESSTHAN: '<';
 GREATERTHAN: '>';
 LESSTHANEQUALTO: '<=';
 GREATERTHANEQUALTO: '>=';
+
 
 
 
