@@ -14,10 +14,10 @@ block
     ;
 
 mathExpr
-    :   conditon=(PLUS | MINUS | MULT | DIVIDE | PLUSEQUAL | MINUSEQUAL | MULTEQUAl | DIVIDEEQUAL) var
-    |   ezSpace conditon=(PLUS | MINUS | MULT | DIVIDE | PLUSEQUAL | MINUSEQUAL | MULTEQUAl | DIVIDEEQUAL) var
-    |   conditon=(PLUS | MINUS | MULT | DIVIDE | PLUSEQUAL | MINUSEQUAL | MULTEQUAl | DIVIDEEQUAL) ezSpace var
-    |   ezSpace conditon=(PLUS | MINUS | MULT | DIVIDE | PLUSEQUAL | MINUSEQUAL | MULTEQUAl | DIVIDEEQUAL) ezSpace var
+    :   conditon=(PLUS | MINUS | MULT | DIVIDE | PLUSEQUAL | MINUSEQUAL | MULTEQUAl | DIVIDEEQUAL | MOD) var
+    |   ezSpace conditon=(PLUS | MINUS | MULT | DIVIDE | PLUSEQUAL | MINUSEQUAL | MULTEQUAl | DIVIDEEQUAL | MOD) var
+    |   conditon=(PLUS | MINUS | MULT | DIVIDE | PLUSEQUAL | MINUSEQUAL | MULTEQUAl | DIVIDEEQUAL | MOD) ezSpace var
+    |   ezSpace conditon=(PLUS | MINUS | MULT | DIVIDE | PLUSEQUAL | MINUSEQUAL | MULTEQUAl | DIVIDEEQUAL | MOD) ezSpace var
     |   mathExpr mathExpr
     ;
 
@@ -29,23 +29,30 @@ plusExpr
     ;
 
 
+conditionExpression
+    :    conditionExpression conditionExpression
+    |    ezSpace condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO | EQUALEQUAL) ezSpace var
+    |    condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO | EQUALEQUAL) ezSpace var
+    |    ezSpace condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO | EQUALEQUAL)  var
+    |    condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO | EQUALEQUAL) var
+    ;
+
+
 
 
 
 expression
    :   var mathExpr
+   |   var mathExpr conditionExpression
+   |   var conditionExpression mathExpr
    |   var conditon=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO) var
    |   var
    |   expression ezSpace AND ezSpace expression
    //
    //WITH SPACES
-   |   var ezSpace condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO | EQUALEQUAL) ezSpace var
-   |   var condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO | EQUALEQUAL) ezSpace var
-   |   var ezSpace condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO | EQUALEQUAL)  var
-   //WITHOUT SPACES
-   |   var condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO | EQUALEQUAL) var
    //
    //
+   | var conditionExpression
    //
    //
    // or expressions
@@ -82,7 +89,8 @@ printExpr
     | var
     ;
 ifBlock
-    : IF expression_block * (ezTab ELIF expression_block) * (ezTab ELSE COL statement_block)?
+    : IF ezSpace expression_block * (ezTab ELIF expression_block) * (ezTab ELSE COL statement_block)?
+    | IF expression_block * (ezTab ELIF expression_block) * (ezTab ELSE COL statement_block)?
     | IF expression_block * (ELIF expression_block) * (ELSE COL statement_block)?
     ;
 expression_block
@@ -123,7 +131,7 @@ whileBlock
     ;
 
 forBlock
-    : FOR ezSpace var ezSpace IN ezSpace RANGE rangeStatement COL
+    : FOR ezSpace var ezSpace IN ezSpace RANGE rangeStatement COL statement_block
     ;
 rangeStatement
     : OPEN ezSpace var ezSpace CLOSE
@@ -188,6 +196,7 @@ COL    : ':';
 NOT    : '!';
 INT    :  '0'..'9'+;
 STRING : '"' (~["\r\n] | '""')* '"';
+MOD : '%';
 
 
 //other string example
