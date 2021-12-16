@@ -69,11 +69,13 @@ expression
 
 var
     : INT
+    | MINUS INT
     | STRING
     | VARNAME
     | intCast
     | strCast
     ;
+
 
 print
     : PRINT OPEN printExpr CLOSE
@@ -104,6 +106,7 @@ statement_block
     | ezTab whileBlock statement_block
     | ezTab print statement_block
     | ezTab forBlock statement_block
+    | ezTab BREAK statement_block
     | block*
     ;
 assignment
@@ -180,6 +183,7 @@ IN : 'in';
 PRINT : 'print';
 SPACE : ' ';
 TAB : '    ';
+BREAK : 'break';
 
 MINUSEQUAL: '-=';
 PLUSEQUAL: '+=';
