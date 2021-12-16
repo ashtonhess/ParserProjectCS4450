@@ -9,13 +9,16 @@ block
     | ifBlock block*
     | print block*
     | whileBlock block*
+    | forBlock block*
+    | expression block*
     ;
 
 mathExpr
-    :   var conditon=(PLUS | MINUS | MULT | DIVIDE | PLUSEQUAL | MINUSEQUAL | MULTEQUAl | DIVIDEEQUAL) var
-    |   var ezSpace conditon=(PLUS | MINUS | MULT | DIVIDE | PLUSEQUAL | MINUSEQUAL | MULTEQUAl | DIVIDEEQUAL) var
-    |   var conditon=(PLUS | MINUS | MULT | DIVIDE | PLUSEQUAL | MINUSEQUAL | MULTEQUAl | DIVIDEEQUAL) ezSpace var
-    |   var ezSpace conditon=(PLUS | MINUS | MULT | DIVIDE | PLUSEQUAL | MINUSEQUAL | MULTEQUAl | DIVIDEEQUAL) ezSpace var
+    :   conditon=(PLUS | MINUS | MULT | DIVIDE | PLUSEQUAL | MINUSEQUAL | MULTEQUAl | DIVIDEEQUAL) var
+    |   ezSpace conditon=(PLUS | MINUS | MULT | DIVIDE | PLUSEQUAL | MINUSEQUAL | MULTEQUAl | DIVIDEEQUAL) var
+    |   conditon=(PLUS | MINUS | MULT | DIVIDE | PLUSEQUAL | MINUSEQUAL | MULTEQUAl | DIVIDEEQUAL) ezSpace var
+    |   ezSpace conditon=(PLUS | MINUS | MULT | DIVIDE | PLUSEQUAL | MINUSEQUAL | MULTEQUAl | DIVIDEEQUAL) ezSpace var
+    |   mathExpr mathExpr
     ;
 
 plusExpr
@@ -30,7 +33,7 @@ plusExpr
 
 
 expression
-   :   mathExpr
+   :   var mathExpr
    |   var conditon=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO) var
    |   var
    |   expression ezSpace AND ezSpace expression
@@ -61,6 +64,8 @@ var
     : INT
     | STRING
     | VARNAME
+    | intCast
+    | strCast
     ;
 
 print
@@ -90,6 +95,7 @@ statement_block
     | ezTab assignment statement_block
     | ezTab whileBlock statement_block
     | ezTab print statement_block
+    | ezTab forBlock statement_block
     | block*
     ;
 assignment
@@ -116,7 +122,33 @@ whileBlock
     | WHILE expression_block
     ;
 
+forBlock
+    : FOR ezSpace var ezSpace IN ezSpace RANGE rangeStatement COL
+    ;
+rangeStatement
+    : OPEN ezSpace var ezSpace CLOSE
+    | OPEN var ezSpace CLOSE
+    | OPEN ezSpace var CLOSE
+    | OPEN var CLOSE
+    | OPEN var COMMA rangeExp CLOSE
+    | OPEN ezSpace var COMMA rangeExp CLOSE
+    ;
+rangeExp
+    : ezSpace var
+    | var
+    | ezSpace var mathExpr
+    ;
 
+intCast
+    : INTCAST OPEN var CLOSE
+    | INTCAST OPEN ezSpace var ezSpace CLOSE
+    | INTCAST OPEN ezSpace var  CLOSE
+    | INTCAST OPEN var ezSpace CLOSE
+    | INTCAST OPEN var mathExpr CLOSE
+    | INTCAST OPEN ezSpace var mathExpr ezSpace CLOSE
+    | INTCAST OPEN ezSpace var mathExpr  CLOSE
+    | INTCAST OPEN var mathExpr ezSpace CLOSE
+    ;
 //NOTE: ezTab
 //NOT SURE IF THIS SHOULD BE USED. MIGHT BREAK RULES OF PYTHON TABS.
 //CHECK -AH
@@ -130,10 +162,13 @@ ezSpace
     | ezSpace ezSpace
     ;
 
-
+INTCAST: 'int';
+COMMA: ',';
+RANGE: 'range';
 STR : 'str';
 WHILE : 'while';
 FOR : 'for';
+IN : 'in';
 PRINT : 'print';
 SPACE : ' ';
 TAB : '    ';
@@ -175,7 +210,6 @@ LESSTHAN: '<';
 GREATERTHAN: '>';
 LESSTHANEQUALTO: '<=';
 GREATERTHANEQUALTO: '>=';
-
 
 
 
