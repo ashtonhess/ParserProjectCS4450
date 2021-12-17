@@ -99,4 +99,10 @@ print("EQ2: "+str(eq2))
 
 ```
 
+## Output
+This output is broken up into 2 trees. You may need to download the photos and zoom in to see what is happening. 
+![parseTreeFirstHalf](https://user-images.githubusercontent.com/79738205/146495081-f1796565-9c2b-47f7-bef7-4f9a92eb5cbe.png)
+
+
+![parseTreeSecondHalf](https://user-images.githubusercontent.com/79738205/146495109-45a2b3b6-6672-4a58-b85d-c11fc5a7810a.png)
 
