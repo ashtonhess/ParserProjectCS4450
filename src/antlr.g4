@@ -119,7 +119,7 @@ statement_block
     | ezTab print statement_block
     | ezTab forBlock statement_block
     | ezTab BREAK statement_block
-    | block*
+    |
     ;
 assignment
     : VARNAME EQUAL expression
