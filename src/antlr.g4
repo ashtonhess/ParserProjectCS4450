@@ -163,6 +163,8 @@ rangeExp
     | ezSpace var mathExpr
     ;
 
+//This takes care of int casting. for when we have int(x).
+//Also supports having mathExpressions within the cast.
 intCast
     : INTCAST OPEN var CLOSE
     | INTCAST OPEN ezSpace var ezSpace CLOSE
@@ -173,13 +175,15 @@ intCast
     | INTCAST OPEN ezSpace var mathExpr  CLOSE
     | INTCAST OPEN var mathExpr ezSpace CLOSE
     ;
-//NOTE: ezTab
-//NOT SURE IF THIS SHOULD BE USED. MIGHT BREAK RULES OF PYTHON TABS.
-//CHECK -AH
+
+//ezTab is used as an easy way to absorb all tabs before nested statements etc.
 ezTab
     :  TAB
     |  ezTab ezTab
     ;
+
+//ezSpace absorbs all spaces, makes it easy to have multiple tabs
+// and spaces. Better version of ezTab.
 ezSpace
     : SPACE
     | TAB
