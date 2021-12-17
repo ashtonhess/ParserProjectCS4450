@@ -102,6 +102,8 @@ print("EQ2: "+str(eq2))
 ## Output
 This is the full output tree. A broken up version is provided below which is much easier to view. Download the photo and zoom in to see the details. 
 
+Note: For this output- In IntelliJ, locate the antlr.g4 file and open it. Right click the start rule in the file and press "Test Rule start". This provides an interactive pane to see the live parse tree. Just copy the text from testdata.txt into the provided text editor to see the best and easiest view of the tree.
+
 ![parseTreeWHOLE](https://user-images.githubusercontent.com/79738205/146495770-9853985f-34a1-4464-be4a-2c6a718eb2ba.png)
 
 This output is broken up into 2 trees. You may need to download the photos and zoom in to see what is happening. First tree picture is from lines 1-37 and the second picture is of the rest parsed out.
