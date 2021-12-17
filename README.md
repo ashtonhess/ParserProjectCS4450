@@ -14,8 +14,9 @@ The grammar for our parser is located in the antlr.g4 file. This grammar describ
 When the program is run, a parse tree is generated and outputted into the console. This is an easy way to view the tree, as children and parent node relations are easily identified with the tabs of seperation. 
 
 ## Setup
+To set up, first you need IntelliJ IDE.  You will also need a copy of JDK 8 installed on your computer (or any other form of running a Java app, we used JDK 8 because this is what is used in 3330). You can find this on Oracle's website. Then, open the IDE and create a new project from a version control system. Use the link to this repo to clone the project. Then, in the IntelliJ IDE go to preferences->plugins->marketplace. Here, you will install the ANTLR 4 plugin. Once installed, you may have to restart your IDE. Then, open the project you cloned. Next, you will need to define a run configuration. A screenshot of the settings we used is provided below. Run the program. This will output a large string of the parse tree for the input file "testdata.txt". This file contains the code to parse. 
 
-Documentation for getting setup:
+Some other documentation for getting setup:
 https://docs.google.com/document/d/1gQ2lsidvN2cDUUsHEkT05L-wGbX5mROB7d70Aaj3R64/edit#
 
 
