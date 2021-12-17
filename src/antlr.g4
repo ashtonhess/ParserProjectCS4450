@@ -66,7 +66,7 @@ expression
    | expression ezSpace AND expression
    | expression AND expression
    ;
-
+// block variable casts for each variable type needed
 var
     : INT
     | MINUS INT
@@ -76,14 +76,14 @@ var
     | strCast
     ;
 
-
+//all statements available for print expressin
 print
-    : PRINT OPEN printExpr CLOSE
-    | PRINT OPEN ezSpace printExpr CLOSE
-    | PRINT OPEN printExpr ezSpace CLOSE
+    : PRINT OPEN printExpr CLOSE // regular print
+    | PRINT OPEN ezSpace printExpr CLOSE //print in case it has spaces inside the parentheses
+    | PRINT OPEN printExpr ezSpace CLOSE //print in case it has spaces inside the parentheses
     | PRINT OPEN ezSpace printExpr ezSpace CLOSE
     ;
-
+// print expr defines what can be put inside of a print expression such as a variabnle or char statement
 printExpr
     : var plusExpr printExpr
     | strCast plusExpr printExpr
