@@ -83,6 +83,9 @@ print
     | PRINT OPEN printExpr ezSpace CLOSE //print in case it has spaces inside the parentheses
     | PRINT OPEN ezSpace printExpr ezSpace CLOSE
     ;
+
+
+
 // print expr defines what can be put inside of a print expression such as a variabnle or char statement
 printExpr
     : var plusExpr printExpr
@@ -90,15 +93,24 @@ printExpr
     | strCast
     | var
     ;
+
+    //This is the ifBlock. It takes care of elif too. Added multiple formats for spaces, different amounts of indentation, etc.
+    //Supports nested if blocks.
 ifBlock
     : IF ezSpace expression_block * (ezTab ELIF expression_block) * (ezTab ELSE COL statement_block)?
     | IF expression_block * (ezTab ELIF expression_block) * (ezTab ELSE COL statement_block)?
     | IF expression_block * (ELIF expression_block) * (ELSE COL statement_block)?
     ;
+
+    //This is a block that holds expressions. Used for if and while blocks.
+    //Supports having a statement directly after to still be included within the previous block.
 expression_block
     : ezSpace expression COL statement_block
     | OPEN expression CLOSE COL statement_block
     ;
+
+    //statement block contains all different blocks that may be nested.
+    //
 statement_block
     : ezTab expression statement_block
     | ezTab ifBlock statement_block
@@ -116,6 +128,7 @@ assignment
     | VARNAME  EQUAL ezSpace expression
     ;
 
+//This takes care of string casting. This is used as a var above. ( str() )
 strCast
     : STR OPEN var CLOSE
     | STR OPEN ezSpace var ezSpace CLOSE
