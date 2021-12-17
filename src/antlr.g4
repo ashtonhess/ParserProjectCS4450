@@ -81,7 +81,7 @@ print
     : PRINT OPEN printExpr CLOSE // regular print
     | PRINT OPEN ezSpace printExpr CLOSE //print in case it has spaces inside the parentheses
     | PRINT OPEN printExpr ezSpace CLOSE //print in case it has spaces inside the parentheses
-    | PRINT OPEN ezSpace printExpr ezSpace CLOSE
+    | PRINT OPEN ezSpace printExpr ezSpace CLOSE //print in case it has spaces inside the parentheses
     ;
 
 
@@ -146,9 +146,11 @@ whileBlock
     | WHILE expression_block
     ;
 
+// defines the syntax of a for the beginning of a for loop statement
 forBlock
     : FOR ezSpace var ezSpace IN ezSpace RANGE rangeStatement COL statement_block
     ;
+    //defines a range statement for the for loop to loop from
 rangeStatement
     : OPEN ezSpace var ezSpace CLOSE
     | OPEN var ezSpace CLOSE
