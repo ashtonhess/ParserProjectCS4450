@@ -4,6 +4,7 @@ start
     : block  EOF
     ;
 
+//main node, start of all blocks.
 block
     : assignment block*
     | ifBlock block*
@@ -13,6 +14,7 @@ block
     | expression block*
     ;
 
+//For expressions of math operators.
 mathExpr
     :   conditon=(PLUS | MINUS | MULT | DIVIDE | PLUSEQUAL | MINUSEQUAL | MULTEQUAl | DIVIDEEQUAL | MOD) var
     |   ezSpace conditon=(PLUS | MINUS | MULT | DIVIDE | PLUSEQUAL | MINUSEQUAL | MULTEQUAl | DIVIDEEQUAL | MOD) var
@@ -21,6 +23,7 @@ mathExpr
     |   mathExpr mathExpr
     ;
 
+//This is the expression for plus that is used in print statements.
 plusExpr
     : ezSpace PLUS ezSpace
     | ezSpace PLUS
@@ -28,7 +31,7 @@ plusExpr
     | PLUS
     ;
 
-
+// This covers all conditional operators. Space formatting included.
 conditionExpression
     :    conditionExpression conditionExpression
     |    ezSpace condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO | EQUALEQUAL| NOTEQUAL) ezSpace var
@@ -37,10 +40,7 @@ conditionExpression
     |    condition=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO | EQUALEQUAL| NOTEQUAL) var
     ;
 
-
-
-
-
+//This covers many different types of expressions with many different formats.
 expression
    :   var mathExpr
    |   var mathExpr conditionExpression
@@ -48,13 +48,8 @@ expression
    |   var conditon=(LESSTHAN | LESSTHANEQUALTO | GREATERTHAN | GREATERTHANEQUALTO) var
    |   var
    |   expression ezSpace AND ezSpace expression
-   //
    //WITH SPACES
-   //
-   //
    | var conditionExpression
-   //
-   //
    // or expressions
    | expression ezSpace OR ezSpace expression
    | expression  OR ezSpace expression
@@ -66,6 +61,7 @@ expression
    | expression ezSpace AND expression
    | expression AND expression
    ;
+
 // block variable casts for each variable type needed
 var
     : INT
@@ -84,9 +80,7 @@ print
     | PRINT OPEN ezSpace printExpr ezSpace CLOSE //print in case it has spaces inside the parentheses
     ;
 
-
-
-// print expr defines what can be put inside of a print expression such as a variabnle or char statement
+// print expr defines what can be put inside of a print expression such as a variable or char statement
 printExpr
     : var plusExpr printExpr
     | strCast plusExpr printExpr
@@ -121,6 +115,8 @@ statement_block
     | ezTab BREAK statement_block
     | block*
     ;
+
+    //This is used to assign variables to values using =. Accounts for differences in spacing.
 assignment
     : VARNAME EQUAL expression
     | VARNAME ezSpace EQUAL expression
@@ -141,6 +137,7 @@ strCast
 //    | SPACE expression LESSTHAN expression
 //    ;
 
+//
 whileBlock
     : WHILE ezSpace expression COL statement_block
     | WHILE expression_block
@@ -222,7 +219,6 @@ INT    :  '0'..'9'+;
 STRING : '"' (~["\r\n] | '""')* '"';
 MOD : '%';
 
-
 //other string example
 //STRING : ('a' .. 'z' | 'A' .. 'Z' | '\u0100' .. '\u017E')+ ;
 WS     : [\r\n]+ -> skip ;
@@ -235,8 +231,6 @@ OR: 'or';
 AND: 'and';
 VARNAME: [a-zA-Z_] [a-zA-Z_0-9]*;
 COMMENT: '#' ~[\r\n]* -> skip;
-
-
 
 //conditional statements
 LESSTHAN: '<';
