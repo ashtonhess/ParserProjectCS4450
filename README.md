@@ -100,7 +100,7 @@ print("EQ2: "+str(eq2))
 ```
 
 ## Output
-This is the full output tree. A broken up version is provided below which may be a little easier to view. Download the photo and zoom in to see the details.
+This is the full output tree. A broken up version is provided below which is much easier to view. Download the photo and zoom in to see the details. 
 
 ![parseTreeWHOLE](https://user-images.githubusercontent.com/79738205/146495770-9853985f-34a1-4464-be4a-2c6a718eb2ba.png)
 
